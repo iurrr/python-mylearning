@@ -1,0 +1,16 @@
+def conflict(state,posx):
+  posy = len(state)
+  for i in range(posx):
+    if abs(state[i]-posx) in (0, posy - i):
+      return True
+    else:
+      return False
+
+def queen(num = 8 , state = ()):
+  for pos in range(num):
+    if not conflict(state, pos):
+      if len(state) == num -1:
+        yield (pos,)
+      else:
+        for result in queen(num , state + (pos,)):
+          yield (pos,) + result
