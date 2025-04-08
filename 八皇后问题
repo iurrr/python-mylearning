@@ -1,16 +1,27 @@
 def conflict(state,posx):
+#定义棋子放置位置的冲突检测，state是已放置皇后位置的元组，posx是当前要检查的X轴上的位置
   posy = len(state)
-  for i in range(posx):
+#posy是当前要检查的Y轴上的位置，即当前行数，其值为已确定皇后位置的行数（考虑到最初的行为第0行）
+  for i in range(posy):      
+#遍历已放置皇后的行
     if abs(state[i]-posx) in (0, posy - i):
+#要检测的点的坐标是(posx,posy),用于比较的已放置皇后的坐标位置是(i,state[i])，
+#因此存在冲突的条件为两点在同一列（state[i]-posx=0）或两点处于对角线上（丨state[i]-posx丨=posy - i），即行差和列差绝对值相等
       return True
     else:
       return False
 
 def queen(num = 8 , state = ()):
+#定义计算方案的方法，num默认为要放置的棋子数量
+#state是每个放置点位信息的元组
   for pos in range(num):
+#从0到num-1遍历每一列
     if not conflict(state, pos):
       if len(state) == num -1:
+#如果state已保存num-1个元素，则生成最后的元素
         yield (pos,)
       else:
         for result in queen(num , state + (pos,)):
+#通过回溯，递归调用queen函数，遇到不符合条件的情况时，回退到上一步，继续尝试其他可能性
           yield (pos,) + result
+#这里yield会一次性生成一个元组，迭代时yield每次生成的一个元组可以作为元素构成最终方案集合的列表
