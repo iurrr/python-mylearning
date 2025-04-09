@@ -1,0 +1,14 @@
+import random
+#创建一套扑克牌
+values = list(range(2,11)) + ['J', 'Q', 'K', 'A']
+suits = ['♠', '♥', '♦', '♣']
+deck = [f'{s}{v}' for s in suits for v in values]
+#洗牌
+random.shuffle(deck)
+#发牌
+try:
+    num = int(input('请输入发牌数量：'))
+    handcard = deck[:num]
+    print('手牌：', handcard)
+except TypeError:
+    print('输入错误，请输入数字')
