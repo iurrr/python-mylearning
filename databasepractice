@@ -1,0 +1,58 @@
+#database.py
+import sys, shelve
+
+def store_person(db):
+    '''询问用户数据并存储'''
+    pid = input('输入ID: ')
+    person = {}
+    person['name'] = input('输入姓名: ')
+    person['age'] = input('输入年龄: ')
+    person['phone'] = input('输入电话: ')
+        
+    db[pid] = person #将数据存储到数据库中
+    print('数据已存储')
+    
+def lookup_person(db):
+    '''查询数据'''
+    pid = input('输入ID: ')
+    if pid in db:
+        field = input('输入要查询的字段(name, age, phone): ')
+        field = field.strip().lower()
+        if field in db[pid]:
+            print(db[pid][field])
+        else:
+            print('没有该字段')
+    else:
+        print('没有该ID')
+
+def printhelp():
+    print('可用指令包括:')
+    print('store : 存储数据')
+    print('lookup : 查询数据')
+    print('quit : 退出程序')
+    print('?: 显示帮助信息')
+    
+def enter_command():
+    cmd = input('输入指令(输入?显示帮助信息): ')
+    cmd = cmd.strip().lower()
+    return cmd
+
+def main():
+    database = shelve.open('D:\\test\\dbtest') #打开数据库  无语了，路径文件带拓展名就报错
+    try:
+        while True:
+            cmd = enter_command()
+            if cmd == 'store':
+                store_person(database)
+            elif cmd == 'lookup':
+                lookup_person(database)
+            elif cmd == '?':
+                printhelp()
+            elif cmd == 'quit':
+                print('退出程序')
+                return
+    finally:
+        database.close()
+        
+if __name__ =='__main__':
+    main()
